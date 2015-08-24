@@ -9,6 +9,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Tasks';
+$this->params['breadcrumbs'][] = ['label' => 'Project', 'url' => ['projectview', 'id' => $projectid,]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tasks-index">
