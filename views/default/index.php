@@ -6,11 +6,14 @@ use yii\helpers\Url;
 ?>
 
 <div class="project-default-index">
-    <h1>Project Summary
+    <h1>Project List
     </h1>
 
-    <h2>Choose a Project</h2>
-    <div style='width: 80%;'>
+<!--    <div style='width: 80%;'>-->
+
+        <p>
+            <?= Html::a('Create Project', ['projectcreate'], ['class' => 'btn btn-success']) ?>
+        </p>
 <?php
 echo  GridView::widget([
         'dataProvider' => $dpProjectList,
@@ -26,7 +29,9 @@ echo  GridView::widget([
 
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
+
+
         ],
   ]);
 ?>
@@ -43,7 +48,7 @@ echo  GridView::widget([
     </div>
 
 <!--    <h2>My Tasks</h2>-->
-    <div style='width: 80%;'>
+<!--    <div style='width: 80%;'>-->
         <?php
 //
 //        echo GridView::widget([
