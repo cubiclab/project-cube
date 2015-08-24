@@ -12,13 +12,15 @@ use Yii;
 use cubiclab\project\models\Project;
 use cubiclab\project\models\ProjectSearch;
 use cubiclab\project\models\Task;
-use cubiclab\project\models\TaskQuery;
-use cubiclab\project\models\TaskSearch;
-use cubiclab\project\models\TaskStatus;
-use cubiclab\project\models\TaskStatusSearch;
-use cubiclab\project\models\TaskComment;
-use cubiclab\project\models\TaskCommentSearch;
 
+//use cubiclab\project\models\TaskQuery;
+//use cubiclab\project\models\TaskSearch;
+//use cubiclab\project\models\TaskStatus;
+//use cubiclab\project\models\TaskStatusSearch;
+//use cubiclab\project\models\TaskComment;
+//use cubiclab\project\models\TaskCommentSearch;
+
+use yii\db\ActiveQuery;
 use yii\web\Session;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -68,10 +70,13 @@ class DefaultController extends Controller
             $this->redirect(['index']);
         }
 
-//        $this->setCurrentProject($projectid);
-        return $this->render('projectview', [
-            'model' => $this->findProjectmodel($id),
-        ]);
+        $model = $this->findProjectmodel($id);
+        if (!isset($model) || !$model instanceof Project) {
+            throw new NotFoundHttpException('The requested project does not exist.');
+        }
+
+
+        return $this->render('projectview', ['model' => $model,]);
     }
 
     protected function findProjectmodel($id)
@@ -79,11 +84,12 @@ class DefaultController extends Controller
         if (($model = Project::findOne($id)) !== null) {
             return $model;
         } else {
-            return new NotFoundHttpException('The requested project does not exist.');
+            throw new NotFoundHttpException('The requested project does not exist.');
 
         }
 
     }
+
 
     /**
      * Updates an existing Projects model.
@@ -91,7 +97,8 @@ class DefaultController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionProjectupdate()
+    public
+    function actionProjectupdate()
     {
         $id = \Yii::$app->request->get('id');
         if (!isset($id)) {
@@ -112,7 +119,19 @@ class DefaultController extends Controller
         }
     }
 
-    public function actionProjectdelete()
+    private
+    function getRequestParam($paramname)
+    {
+        $param = \Yii::$app->request->get($paramname);
+        if (!isset($param)) {
+            throw new NotFoundHttpException('The requested parameter "' . $paramname . '" not found in request.');
+        } else {
+            return $param;
+        }
+    }
+
+    public
+    function actionProjectdelete()
     {
         $id = \Yii::$app->request->get('id');
         if (!isset($id)) {
@@ -124,4 +143,99 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         }
     }
+
+//************************************************************//
+//            Tasks CRUD                                      //
+//************************************************************//
+
+    public function actionTasklist()
+    {
+        $projectID = $this->getRequestParam('projectid');
+
+        $project = new Project();
+        $tasks = $project->getTasks($projectID);
+
+        return $this->render('tasklist', [
+            'projectid' => $projectID,
+            'tasks' => $tasks,
+        ]);
+    }
+
+    /**
+     * Creates a new Tasks model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionTaskcreate()
+    {
+        $projectid = $this->getRequestParam('projectid');
+
+        $model = new Task();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(Url::toRoute(['taskview', 'projectid' => $projectid, 'id' => $model->id,]));
+        } else {
+            $model->projectID = $projectid;
+            return $this->render('taskcreate', [
+                'model' => $model,]);
+        }
+    }
+
+    /**
+     * Displays a single Task model.
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionTaskview()
+    {
+            $id = $this->getRequestParam('id');
+$model = Project::getTaskModel($id);
+
+        if (!isset($model)) {
+            throw new NotFoundHttpException('The Task "' .$id .'" not found.');
+        }
+
+        return $this->render('taskview', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Task model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionTaskUpdate($id)
+    {
+        $model = Project::getTaskModel($id);
+        if (!isset($model)) {
+            throw new NotFoundHttpException('The Task "' . $id . '" not found.');
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['taskview', 'id' => $model->id,]);
+        } else {
+            return $this->render('taskupdate', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Tasks model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionTaskdelete($id)
+    {
+
+        $task = Project::getTaskModel($id);
+        $projectid = $task->projectID;
+        $task->delete();
+
+        return $this->redirect(['tasklist', 'projectid'=>$projectid]);
+    }
+
 }

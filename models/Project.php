@@ -4,6 +4,7 @@ namespace cubiclab\project\models;
 
 use Yii;
 use yii\db\Query;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -93,8 +94,22 @@ class Project extends \yii\db\ActiveRecord
         return $query->one()['name'];
     }
 
-    public function getTasks() {
-        return (new Task)->find()->where(['projectid'=>$this->id,])->all();
+    public function getTasks($projectid)
+    {
+        if (!isset($projectid)) {
+            return false;
+        }
+        $query = new ActiveQuery(new Task);
+        return $query->where(['projectID' => $projectid])->all();
+    }
 
+    public static function getTaskModel($id)
+    {
+        if (!isset($id)) {
+            return false;
+        }
+
+        $query = new ActiveQuery(new Task);
+        return $query->where(['id' => $id])->one();
     }
 }

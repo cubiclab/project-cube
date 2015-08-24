@@ -90,10 +90,10 @@ class Task extends \yii\db\ActiveRecord
 
     public function getTaskComments()
     {
-        $searchModel = new TaskCommentSearch();
-        return $searchModel->search(
-            ['taskID' => $this->id,]
-        );
+//        $searchModel = new TaskCommentSearch();
+//        return $searchModel->search(
+//            ['taskID' => $this->id,]
+//        );
 
     }
 

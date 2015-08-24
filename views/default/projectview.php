@@ -29,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::encode('Status') ?> <?= Html::encode($model->getStatusText($model->status)) ?>
     </div>
 
-    <div class="project-taskovrv">
-
+    <div class="project-tasklist">
+        <?= Html::a('TaskList', ['tasklist', 'projectid' => $model->id], ['class' => 'btn btn-primary']) ?>
     </div>
 
 </div>
