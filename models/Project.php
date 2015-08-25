@@ -2,10 +2,12 @@
 
 namespace cubiclab\project\models;
 
+use cubiclab\project\ProjectCube;
 use Yii;
 use yii\db\Query;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use cubiclab\project\scripts\BreadcrumbTraceInterface;
 
 /**
  * This is the model class for table "{{%cprj_projects}}".
@@ -17,9 +19,28 @@ use yii\helpers\ArrayHelper;
  * @property string $created
  * @property integer $responsible_user
  */
-class Project extends \yii\db\ActiveRecord
+class Project extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
 {
 
+//************************************************//
+//    BreadcrumbTraceInterface
+//************************************************//
+
+
+    public function bct_getParent()
+    {
+//        return null;
+        return Yii::$app->controller->module;
+    }
+
+    public function bct_getBreadcrumb()
+    {
+        return
+            ['label' => $this->name, 'url' => ['projectview', 'id' => $this->id,]];
+
+    }
+
+//************************************************//
     public $tasks;
 
     /**

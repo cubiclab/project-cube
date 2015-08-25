@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use cubiclab\project\scripts\BreadcrumbTraceHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\cubicProject\models\TaskComment */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Task Comments', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Note #'.$model->id;
+BreadcrumbTraceHelper::bct_getBreadcrumbTrace($model, $trace);
+$this->params['breadcrumbs'] = $trace;
 ?>
 <div class="task-comment-view">
 

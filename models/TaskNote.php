@@ -2,7 +2,10 @@
 
 namespace cubiclab\project\models;
 
+use cubiclab\project\ProjectCube;
 use Yii;
+use cubiclab\project\scripts\BreadcrumbTraceInterface;
+
 
 /**
  * This is the model class for table "{{%cprj_taskcomments}}".
@@ -13,8 +16,25 @@ use Yii;
  * @property integer $userID
  * @property string $postedTime
  */
-class TaskNote extends \yii\db\ActiveRecord
+class TaskNote extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
 {
+
+//************************************************//
+//    BreadcrumbTraceInterface
+//************************************************//
+
+    public function bct_getParent()
+    {
+        return Project::getTaskModel($this->taskID) ;
+//            Task::find()->where(['id'=>$this->taskID,])->one();
+    }
+
+    public function bct_getBreadcrumb()
+    {
+        return ['label' => 'Note #'.$this->id, 'url' => ['tasknoteview', 'id' => $this->id,]];
+    }
+
+//************************************************//
     /**
      * @inheritdoc
      */

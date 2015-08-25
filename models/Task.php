@@ -8,6 +8,7 @@ use cubiclab\project\models\TaskNote;
 use yii\db\Query;
 use yii\db\ActiveQuery;
 use yii\data\ActiveDataProvider;
+use cubiclab\project\scripts\BreadcrumbTraceInterface;
 
 /**
  * This is the model class for table "{{%cprj_tasks}}".
@@ -27,8 +28,24 @@ use yii\data\ActiveDataProvider;
  * @property integer $authorID
  * @property integer $responsibleID
  */
-class Task extends \yii\db\ActiveRecord
+class Task extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
 {
+
+//************************************************//
+//    BreadcrumbTraceInterface
+//************************************************//
+
+    public function bct_getParent()
+    {
+        return Project::find()->where(['id'=>$this->projectID,])->one();
+    }
+
+    public function bct_getBreadcrumb()
+    {
+        return ['label' => $this->name, 'url' => ['taskview', 'id' => $this->id,]];
+    }
+
+//************************************************//
 
     /**
      * @inheritdoc
@@ -122,7 +139,8 @@ class Task extends \yii\db\ActiveRecord
 
     }
 
-    public static function getTaskNotes($taskid = null) {
+    public static function getTaskNotes($taskid = null)
+    {
         if (!isset($taskid)) {
             return false;
         }
@@ -131,7 +149,8 @@ class Task extends \yii\db\ActiveRecord
 
     }
 
-    public function TaskNotes() {
+    public function TaskNotes()
+    {
         if (!isset($this->id)) {
             return false;
         }

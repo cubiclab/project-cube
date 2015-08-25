@@ -3,15 +3,15 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ListView;
-
+use cubiclab\project\scripts\BreadcrumbTraceHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\cubicProject\models\Tasks */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Project', 'url' => ['projectview', 'id' => $model->projectID,]];
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['tasklist', 'projectid' => $model->projectID,]];
-$this->params['breadcrumbs'][] = $this->title;
+BreadcrumbTraceHelper::bct_getBreadcrumbTrace($model, $trace);
+$this->params['breadcrumbs'] = $trace;
+
 ?>
 <div class="tasks-view">
     <div>
