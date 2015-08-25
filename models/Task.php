@@ -3,9 +3,10 @@
 namespace cubiclab\project\models;
 
 use Yii;
-use app\modules\cubicProject\models\Project;
-use app\modules\cubicProject\models\TaskComment;
+use cubiclab\project\models\Project;
+use cubiclab\project\models\TaskNote;
 use yii\db\Query;
+use yii\db\ActiveQuery;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -74,6 +75,7 @@ class Task extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * @inheritdoc
      * @return TaskQuery the active query used by this AR class.
@@ -118,6 +120,34 @@ class Task extends \yii\db\ActiveRecord
         return $query->one()['name'];
 
 
+    }
+
+    public static function getTaskNotes($taskid = null) {
+        if (!isset($taskid)) {
+            return false;
+        }
+        $query = new ActiveQuery(new TaskNote());
+        return $query->where(['taskID' => $taskid])->all();
+
+    }
+
+    public function TaskNotes() {
+        if (!isset($this->id)) {
+            return false;
+        }
+        $query = new ActiveQuery(new TaskNote());
+        return $query->where(['taskID' => $this->id])->all();
+
+    }
+
+    public static function getTaskNoteModel($id)
+    {
+        if (!isset($id)) {
+            return false;
+        }
+
+        $query = new ActiveQuery(new TaskNote);
+        return $query->where(['id' => $id])->one();
     }
 
 }

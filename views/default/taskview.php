@@ -58,6 +58,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1>Task Comments: <?php // Html::encode($model->getTaskComments()->count) ?></h1>
     <?php
+    foreach ($model->TaskNotes() as $tasknote) {
+        $message = substr($tasknote->message, 0, 26);
+        $message = str_replace(['\r\n', '\n', '\r',],'',$message) . '...';
+
+        echo Html::a(Html::encode($message), ['tasknoteview', 'id' => $tasknote->id,]);
+        echo Html::tag('br');
+
+    }
+
     //    ListView::widget([
     //        'dataProvider' => $model->getTaskComments(),
     //        'itemView' =>
@@ -74,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
     //            }
     //    ]);
     ?>
-    <?= Html::a('Add comment', ['project/tasknoteadd', 'projectid' => $model->projectID, 'taskid' => $model->id,]) ?>
+    <?= Html::a('Add comment', ['tasknotecreate', 'projectid' => $model->projectID, 'taskid' => $model->id,]) ?>
 
 
     <h2>Subtasks</h2>
@@ -86,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
     //                echo Html::tag('br');
     //            }]);
     ?>
-    <?= Html::a('Add subtask', ['project/taskcreate', 'projectid' => $model->projectID, 'parenttask' => $model->id,]) ?>
+    <?= Html::a('Add subtask', ['taskcreate', 'projectid' => $model->projectID, 'parenttask' => $model->id,]) ?>
 
 
 </div>

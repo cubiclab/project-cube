@@ -8,6 +8,7 @@
 
 namespace cubiclab\project\controllers;
 
+use cubiclab\project\models\TaskNote;
 use Yii;
 use cubiclab\project\models\Project;
 use cubiclab\project\models\ProjectSearch;
@@ -188,11 +189,11 @@ class DefaultController extends Controller
      */
     public function actionTaskview()
     {
-            $id = $this->getRequestParam('id');
-$model = Project::getTaskModel($id);
+        $id = $this->getRequestParam('id');
+        $model = Project::getTaskModel($id);
 
         if (!isset($model)) {
-            throw new NotFoundHttpException('The Task "' .$id .'" not found.');
+            throw new NotFoundHttpException('The Task "' . $id . '" not found.');
         }
 
         return $this->render('taskview', [
@@ -235,7 +236,98 @@ $model = Project::getTaskModel($id);
         $projectid = $task->projectID;
         $task->delete();
 
-        return $this->redirect(['tasklist', 'projectid'=>$projectid]);
+        return $this->redirect(['tasklist', 'projectid' => $projectid]);
     }
 
+
+//****************************************************************//
+//    Task note CRUD
+//****************************************************************//
+    public function actionTasknotelist($taskid = null)
+    {
+        if (!isset($taskid)) {
+            return false;
+        }
+        $tasknotes = Task::getTaskNotes($taskid);
+        return $this->render('tasknotelist', [
+            'tasknotes' => $tasknotes,
+        ]);
+
+        /*//        $searchModel = new TaskCommentSearch();
+        //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $tasknotes = Task::getTaskNotes($this->id);
+            }*/
+    }
+
+    /**
+     * Creates a new TaskNote model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+
+    public function actionTasknotecreate($projectid, $taskid)
+    {
+        $model = new TaskNote();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(Url::toRoute(['tasknoteview', 'projectid' => $projectid, 'taskid' => $taskid, 'id' => $model->id,]));
+        } else {
+            $model->taskID = $taskid;
+            return $this->render('tasknotecreate', [
+                'model' => $model,]);
+        }
+    }
+
+    /**
+     * Displays a single TaskComment model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionTasknoteview($id)
+    {
+
+        $model = Task::getTaskNoteModel($id);
+
+        if (!isset($model)) {
+            throw new NotFoundHttpException('The Task "' . $id . '" not found.');
+        }
+
+        return $this->render('tasknoteview', [
+            'model' => Task::getTaskNoteModel($id),
+        ]);
+
+    }
+
+    /**
+     * Updates an existing TaskComment model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionTasknoteupdate($id)
+    {
+        $model = Task::getTaskNoteModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['tasknoteview', 'id' => $model->id]);
+        } else {
+            return $this->render('tasknoteupdate', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing TaskComment model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionTasknotedelete($taskid, $id)
+    {
+        Task::getTaskNoteModel($id)->delete();
+
+        return $this->redirect(['tasknotelist', 'taskid' => $taskid]);
+    }
 }
