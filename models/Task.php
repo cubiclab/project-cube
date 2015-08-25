@@ -150,4 +150,14 @@ class Task extends \yii\db\ActiveRecord
         return $query->where(['id' => $id])->one();
     }
 
+    public static function getTaskModel($id)
+    {
+        if (!isset($id)) {
+            return false;
+        }
+
+        $query = new ActiveQuery(new Task);
+        return $query->where(['id' => $id])->one();
+    }
+
 }

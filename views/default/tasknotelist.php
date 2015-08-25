@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\cubicProject\models\TaskCommentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Task Comments';
+$this->title = 'Task Notes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="task-comment-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Task Comment', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Note', ['tasknotecreate', 'projectid' => $task->projectID, 'taskid' => $task->id,], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php

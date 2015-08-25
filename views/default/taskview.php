@@ -56,7 +56,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::encode($model->description) ?>
     </div>
 
-    <h1>Task Comments: <?php // Html::encode($model->getTaskComments()->count) ?></h1>
+    <h1>Task Notes:</h1>
+    <div>
+    <?= Html::a('Note List', ['tasknotelist', 'taskid' => $model->id, ], ['class' => 'btn btn-primary']) ?>
+    </div>
+
+
     <?php
     foreach ($model->TaskNotes() as $tasknote) {
         $message = substr($tasknote->message, 0, 26);

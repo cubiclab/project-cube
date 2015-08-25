@@ -248,15 +248,12 @@ class DefaultController extends Controller
         if (!isset($taskid)) {
             return false;
         }
-        $tasknotes = Task::getTaskNotes($taskid);
+        $task = Task::getTaskModel($taskid);
+        $tasknotes = $task->TaskNotes();
         return $this->render('tasknotelist', [
-            'tasknotes' => $tasknotes,
+            'tasknotes' => $tasknotes, 'task' => $task,
         ]);
 
-        /*//        $searchModel = new TaskCommentSearch();
-        //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $tasknotes = Task::getTaskNotes($this->id);
-            }*/
     }
 
     /**
@@ -294,7 +291,7 @@ class DefaultController extends Controller
         }
 
         return $this->render('tasknoteview', [
-            'model' => Task::getTaskNoteModel($id),
+            'model' => Task::getTaskNoteModel($id), 'task' => $model,
         ]);
 
     }
