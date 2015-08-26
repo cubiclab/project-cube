@@ -9,6 +9,7 @@ use yii\db\ActiveQuery;
 use \yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use cubiclab\project\scripts\BreadcrumbTraceInterface;
+use cubiclab\project\scripts\ChangedocManagerBehavior;
 
 /**
  * This is the model class for table "{{%cprj_projects}}".
@@ -23,6 +24,14 @@ use cubiclab\project\scripts\BreadcrumbTraceInterface;
 class Project extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
 {
 
+    public function behaviors()
+    {
+        return [
+            'history' => [
+                'class' => ChangedocManagerBehavior::className(),
+            ],
+        ];
+    }
 //************************************************//
 //    BreadcrumbTraceInterface
 //************************************************//

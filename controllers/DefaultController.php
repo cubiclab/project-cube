@@ -167,9 +167,12 @@ class DefaultController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionTaskcreate()
+    public function actionTaskcreate($projectid = null, $parenttask = null)
     {
-        $projectid = $this->getRequestParam('projectid');
+        if (!isset($projectid)) {
+            $projectid = $this->getRequestParam('projectid');
+        }
+
 
         $model = new Task();
 
@@ -177,6 +180,7 @@ class DefaultController extends Controller
             return $this->redirect(Url::toRoute(['taskview', 'projectid' => $projectid, 'id' => $model->id,]));
         } else {
             $model->projectID = $projectid;
+            $model->parenttask = isset($parenttask) ? $parenttask : 0;
             return $this->render('taskcreate', [
                 'model' => $model,]);
         }
