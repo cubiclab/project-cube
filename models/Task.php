@@ -179,4 +179,10 @@ class Task extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
         return $query->where(['id' => $id])->one();
     }
 
+    public function getSubtasks()
+    {
+        $query = new ActiveQuery(new Task);
+        return $query->where(['projectID' => $this->projectID, 'parenttask'=>$this->id])->all();
+    }
+
 }

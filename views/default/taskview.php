@@ -1,9 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
-use yii\widgets\ListView;
 use cubiclab\project\scripts\BreadcrumbTraceHelper;
+use yii\helpers\Url;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\cubicProject\models\Tasks */
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'] = $trace;
 
     <h1>Task Notes:</h1>
     <div>
-    <?= Html::a('Note List', ['tasknotelist', 'taskid' => $model->id, ], ['class' => 'btn btn-primary']) ?>
+    <?php //Html::a('Note List', ['tasknotelist', 'taskid' => $model->id, ], ,) ?>
     </div>
 
 
@@ -72,35 +72,21 @@ $this->params['breadcrumbs'] = $trace;
 
     }
 
-    //    ListView::widget([
-    //        'dataProvider' => $model->getTaskComments(),
-    //        'itemView' =>
-    //            function ($comment) {
-    //                echo '<tr><td>' .
-    //                    $comment->id .
-    //                    '</td><td>' .
-    //                    Html::a($comment->message, ['project/tasknoteview', 'id' => $comment->id]) .
-    //                    '</td><td>' .
-    //                    $comment->userID .
-    //                    '</td><td>' .
-    //                    $comment->postedTime .
-    //                    '</td></tr><br>';
-    //            }
-    //    ]);
-    ?>
-    <?= Html::a('Add comment', ['tasknotecreate', 'projectid' => $model->projectID, 'taskid' => $model->id,]) ?>
+     ?>
+    <?= Html::a('Add comment', ['tasknotecreate', 'projectid' => $model->projectID, 'taskid' => $model->id,], ['class' => 'btn btn-primary']) ?>
 
 
     <h2>Subtasks</h2>
     <?php
-    //    ListView::widget(['dataProvider' => $model->getChildTasks(),
-    //        'itemView' =>
-    //            function ($child) {
-    //                echo Html::a($child['name'], ['project/taskview', 'id' => $child['id'], 'projectid' => $child['projectID']]);
-    //                echo Html::tag('br');
-    //            }]);
+
+    foreach ($model->getSubtasks() as $subtask) {
+
+        echo Html::a($subtask->name, Url::toRoute(['taskview', 'id'=>$subtask->id,]));
+        echo Html::tag('br');
+    }
+
     ?>
-    <?= Html::a('Add subtask', ['taskcreate', 'projectid' => $model->projectID, 'parenttask' => $model->id,]) ?>
+    <?= Html::a('Add subtask', ['taskcreate', 'projectid' => $model->projectID, 'parenttask' => $model->id,], ['class' => 'btn btn-primary']) ?>
 
 
 </div>
