@@ -40,7 +40,7 @@ class TaskNote extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
      */
     public static function tableName()
     {
-        return '{{%cprj_taskcomments}}';
+        return '{{%cprj_tasknotes}}';
     }
 
     /**
@@ -49,10 +49,9 @@ class TaskNote extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
     public function rules()
     {
         return [
-            [['taskID', 'message', 'userID', 'postedTime'], 'required'],
+            [['taskID', 'message', 'userID'], 'required'],
             [['taskID', 'userID'], 'integer'],
             [['message'], 'string'],
-            [['postedTime'], 'safe'],
         ];
     }
 

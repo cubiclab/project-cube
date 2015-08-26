@@ -31,6 +31,12 @@ $this->params['breadcrumbs'] = $trace;
     <?= Html::encode($model->description) ?>
     <div>
         <?= Html::encode('Status') ?> <?= Html::encode($model->getStatusText($model->status)) ?>
+        <?php
+//        $created = new DateTime();
+//        $created->setTimestamp($model->created);
+        ?>
+
+        <?= Html::encode('Created') ?> <?= Html::encode($model->created) ?>
     </div>
 
     <div class="project-tasklist">

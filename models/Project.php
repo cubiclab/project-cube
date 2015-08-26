@@ -6,6 +6,7 @@ use cubiclab\project\ProjectCube;
 use Yii;
 use yii\db\Query;
 use yii\db\ActiveQuery;
+use \yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use cubiclab\project\scripts\BreadcrumbTraceInterface;
 
@@ -57,9 +58,10 @@ class Project extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
     public function rules()
     {
         return [
-            [['name', 'description', 'status', 'created', 'responsible_user'], 'required'],
+            [['name', 'description', 'status', /*'created', */
+                'responsible_user'], 'required'],
             [['status', 'responsible_user'], 'integer'],
-            [['created'], 'safe'],
+//            [['created'], 'timestamp'],
             [['name'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255]
         ];

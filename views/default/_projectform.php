@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'created')->textInput() ?>
+<?php // $form->field($model, 'created')->textInput() ?>
 
     <?= $form->field($model, 'responsible_user')->textInput() ?>
 

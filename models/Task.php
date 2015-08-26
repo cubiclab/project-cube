@@ -61,10 +61,10 @@ class Task extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
     public function rules()
     {
         return [
-            [['projectID', 'name', 'status', 'priority', 'description', 'parenttask', 'waitListID', 'progress', 'created', 'startDate', 'finishDate', 'authorID', 'responsibleID'], 'required'],
+            [['projectID', 'name', 'status', 'priority', 'description', 'parenttask', 'waitListID', 'progress', 'startDate', 'finishDate', 'authorID', 'responsibleID'], 'required'],
             [['projectID', 'status', 'priority', 'parenttask', 'waitListID', 'progress', 'authorID', 'responsibleID'], 'integer'],
             [['description'], 'string'],
-            [['created', 'startDate', 'finishDate'], 'safe'],
+            [['startDate', 'finishDate'], 'safe'],
             [['name'], 'string', 'max' => 255]
         ];
     }

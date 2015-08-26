@@ -111,7 +111,7 @@ class DefaultController extends Controller
             return false;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) /*&& $model->setautovalues()*/ && $model->save()) {
             return $this->redirect(['projectview', 'id' => $model->id]);
         } else {
             return $this->render('projectupdate', [
