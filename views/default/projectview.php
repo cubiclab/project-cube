@@ -31,15 +31,19 @@ $this->params['breadcrumbs'] = $trace;
     <?= Html::encode($model->description) ?>
     <div>
         <?= Html::encode('Status') ?> <?= Html::encode($model->getStatusText($model->status)) ?>
-        <?php
-//        $created = new DateTime();
-//        $created->setTimestamp($model->created);
-        ?>
 
         <?= Html::encode('Created') ?> <?= Html::encode($model->created) ?>
     </div>
 
     <div class="project-tasklist">
+        <h1>Task list</h1>
+        <?php
+        foreach ($model->getTasks() as $task) {
+            echo Html::a($task->name, $task->bct_getBreadcrumb()['url']);
+            echo Html::tag('br');
+        }
+
+        ?>
         <?= Html::a('TaskList', ['tasklist', 'projectid' => $model->id], ['class' => 'btn btn-primary']) ?>
     </div>
 

@@ -117,8 +117,11 @@ class Project extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
         return $query->one()['name'];
     }
 
-    public function getTasks($projectid)
+    public function getTasks($projectid = null)
     {
+        if (!isset($projectid)) {
+            $projectid = $this->id;
+        }
         if (!isset($projectid)) {
             return false;
         }

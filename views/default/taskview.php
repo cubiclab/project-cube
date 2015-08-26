@@ -11,6 +11,7 @@ use yii\helpers\Url;
 $this->title = $model->name;
 BreadcrumbTraceHelper::bct_getBreadcrumbTrace($model, $trace);
 $this->params['breadcrumbs'] = $trace;
+$this->params['breadcrumbs_homeLink'] = ['label'=>'project-cube', 'url'=>['default/index',]];
 
 ?>
 <div class="tasks-view">
