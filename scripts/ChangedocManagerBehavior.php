@@ -51,4 +51,8 @@ class ChangedocManagerBehavior extends Behavior
         }
         $manager->run($type, $this->owner);
     }
+
+    public function getHistory() {
+        
+    }
 }
