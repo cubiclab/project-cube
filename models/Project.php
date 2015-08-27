@@ -56,9 +56,11 @@ class Project extends \yii\db\ActiveRecord implements BreadcrumbTraceInterface
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName($asPlainText = false)
     {
-        return '{{%cprj_projects}}';
+        return ($asPlainText == false) ? '{{%cprj_projects}}' : 'cprj_projects';
+//        return '{{%cprj_projects}}';
+
     }
 
     /**

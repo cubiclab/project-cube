@@ -49,12 +49,11 @@ class ChangedocManager
         $pkey = $object->primaryKey();
         $pkey = $pkey[0];
         $data = [
-            'table' => $object->tableName(),
+            'table' => $object->tableName(true),
             'model_id' => $object->getPrimaryKey(),
             'type' => $type,
             'date' => date('Y-m-d H:i:s', time()),
         ];
-        \Yii::info(var_export($type, true), 'debug');
         switch ($type) {
             case self::EVT_INSERT:
                 $data['field_name'] = $pkey;
@@ -65,12 +64,7 @@ class ChangedocManager
                     $data['field_name'] = $updatedFieldKey;
                     $data['old_value'] = $updatedFieldValue;
                     $data['new_value'] = $object->$updatedFieldKey;
-                    \Yii::info($updatedFieldKey, 'debug');
-                    \Yii::info($updatedFieldValue, 'debug');
-                    \Yii::info($object->$updatedFieldKey, 'debug');
-//                    if (!$updatedFieldValue === $object->$updatedFieldKey) {
                     $this->saveField($data);
-//                    }
                 }
                 break;
             case self::EVT_DELETE:
@@ -88,12 +82,7 @@ class ChangedocManager
 
     public function saveField($data)
     {
-        $s = implode('|', $data);
-        $o = $data['old_value'];
-        $n = $data['new_value'];
-        $e = $o==$n ? 'eq' : 'ne';
-
-        if ($e === 'eq') {return false; }
+        if ($data['old_value'] == $data['new_value']) {return false; }
         $table = isset($this->tableName) ? $this->tableName : $this::$tableName;
         self::getDB()->createCommand()
             ->insert($table, $data)->execute();
