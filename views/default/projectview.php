@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use cubiclab\project\scripts\BreadcrumbTraceHelper;
+use \cubiclab\admin\widgets\Panel;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\cubicProject\models\Projects */
@@ -14,7 +15,17 @@ $this->params['breadcrumbs'] = $trace;
 //$this->params['breadcrumbs'][] = ['label' => 'Projects', 'url' => ['projectview', 'id'=>$model->id, ]];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="project-view">
+
+<?php
+Panel::begin(
+    [
+        'title' => $this->title,
+'headStyle' => Panel::WARNING,
+'fullColor' => true,
+//'buttonsTemplate' => $boxButtons,
+    ]
+);
+?>
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
@@ -28,14 +39,14 @@ $this->params['breadcrumbs'] = $trace;
         ]) ?>
     </p>
 
-    <?= Html::encode($model->description) ?>
+<?= Html::encode($model->description) ?>
     <div>
         <?= Html::encode('Status') ?> <?= Html::encode($model->getStatusText($model->status)) ?>
 
         <?= Html::encode('Created') ?> <?= Html::encode($model->created) ?>
     </div>
 
-    <div class="project-tasklist">
+    <!--<div class="project-tasklist">-->
         <h1>Task list</h1>
         <?php
         foreach ($model->getTasks() as $task) {
@@ -45,7 +56,9 @@ $this->params['breadcrumbs'] = $trace;
 
         ?>
         <?= Html::a('TaskList', ['tasklist', 'projectid' => $model->id], ['class' => 'btn btn-primary']) ?>
+   <!-- </div>-->
+
+
     </div>
 
-</div>
-</div>
+<?php \cubiclab\admin\widgets\Panel::end(); ?>
